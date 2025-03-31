@@ -8,7 +8,7 @@ export default function Navbar() {
   return (
     <nav className="flex justify-between items-center bg-gray-800 text-white p-4 shadow-md">
       <Link to="/" className="text-2xl font-bold text-white hover:text-blue-300 transition">
-        Zidio's Task Manager
+        TaskFlow
       </Link>
       <div>
         {user ? (

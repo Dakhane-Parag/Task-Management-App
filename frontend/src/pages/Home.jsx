@@ -7,7 +7,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center">
       {/* Hero Section */}
       <header className="w-full py-16 text-center">
-        <h1 className="text-4xl font-bold mb-4">🚀 Zidio's Task Manager: Your Ultimate Task Manager</h1>
+        <h1 className="text-4xl font-bold mb-4">🚀 TaskFlow: Your Ultimate Task Manager</h1>
         <p className="text-lg text-gray-300 max-w-xl mx-auto">
           Organize tasks, collaborate with teams, and meet deadlines effortlessly.
         </p>
