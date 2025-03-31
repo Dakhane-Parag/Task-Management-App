@@ -2,23 +2,45 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Register() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(email, password);
-    navigate("/dashboard");
+    
+    // Here, you would typically send the data to a backend API
+    if (username && email && password) {
+      login(email, password); // Simulating login after registration
+      navigate("/dashboard");
+    } else {
+      alert("Please fill in all fields");
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
-        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">Register</h1>
         <form onSubmit={handleSubmit}>
+          {/* Username Input */}
+          <div className="mb-4">
+            <label className="block text-gray-300 text-sm font-semibold mb-2">
+              Username
+            </label>
+            <input 
+              type="text" 
+              placeholder="Enter your username" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)}
+              className="block w-full p-3 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
           {/* Email Input */}
           <div className="mb-4">
             <label className="block text-gray-300 text-sm font-semibold mb-2">
@@ -49,19 +71,19 @@ export default function Login() {
             />
           </div>
 
-          {/* Login Button */}
+          {/* Register Button */}
           <button 
             type="submit" 
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded transition duration-200 cursor-pointer"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded transition duration-200 cursor-pointer"
           >
-            Login
+            Register
           </button>
         </form>
 
-        {/* Register Link */}
+        {/* Login Link */}
         <p className="mt-4 text-center text-gray-400 text-sm">
-          Don't have an account?{" "}
-          <a href="/register" className="text-blue-400 hover:underline">Register</a>
+          Already have an account?{" "}
+          <a href="/login" className="text-blue-400 hover:underline">Login</a>
         </p>
       </div>
     </div>
