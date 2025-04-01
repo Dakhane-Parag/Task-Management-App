@@ -8,8 +8,8 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    if (!user) {
-      navigate("/login"); // ✅ Redirect if not logged in
+   if(!user) {
+      navigate("/login"); // Redirect to login if user is not authenticated
     }
 
     // Dummy tasks (Replace with API call)
@@ -18,21 +18,21 @@ export default function Dashboard() {
       { id: 2, title: "Fix authentication bug", status: "Pending" },
       { id: 3, title: "Write documentation", status: "Completed" },
     ]);
-  }, [user, navigate]);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Welcome, {user?.name || "User"} 👋</h1>
-        <button 
-          onClick={() => { 
-            logout(); 
-            navigate("/login"); // ✅ Navigate to login on logout
-          }} 
+        <h1 className="text-2xl font-bold">Welcome, {user?.username || "User"} 👋</h1>
+        {/* <button
+          onClick={() => {
+            logout();
+            navigate("/login");
+          }}
           className="bg-red-600 px-4 py-2 rounded"
         >
           Logout
-        </button>
+        </button> */}
       </div>
 
       <h2 className="text-xl mt-4">Your Tasks</h2>

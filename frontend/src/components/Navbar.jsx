@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { Link,useNavigate } from "react-router-dom";
+import { useContext ,useEffect} from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function Navbar() {
   const { user, logout } = useContext(AuthContext);
-
+  // 
   return (
     <nav className="flex justify-between items-center bg-gray-800 text-white p-4 shadow-md">
       <Link to="/" className="text-2xl font-bold text-white hover:text-blue-300 transition">

@@ -1,36 +1,41 @@
 import { createContext, useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("AuthToken");
     if (token) {
-      fetch("http://localhost:5000/api/auth/me", {
+      axios.get("http://localhost:5000/me", {
         headers: { Authorization: `Bearer ${token}` },
       })
-        .then((res) => res.json())
-        .then((data) => setUser(data.user))
-        .catch(() => localStorage.removeItem("token"));
+        .then((res) => {
+          setUser(res.data.user);
+        })
+        .catch(() => {
+          localStorage.removeItem("AuthToken");
+        });
     }
   }, []);
 
   const login = async (email, password) => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const res = await axios.post("http://localhost:5000/login", {
+        email,
+        password,
       });
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem("token", data.token);
-        setUser(data.user);
-        return true; // ✅ Return true if login is successful
+
+      if (res.status === 200) {
+        localStorage.setItem("AuthToken", res.data.token);
+        setUser(res.data.user);
+        return true;
       } else {
-        alert(data.message);
+        alert(res.data.message);
         return false;
       }
     } catch (error) {
@@ -40,8 +45,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("AuthToken");
     setUser(null);
+    navigate("/login"); // Navigate to login page on logout
   };
 
   return (
