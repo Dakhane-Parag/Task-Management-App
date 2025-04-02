@@ -2,11 +2,12 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function Register() {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-  
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,9 +28,18 @@ export default function Register() {
         throw new Error(response.data.message || "Registration failed!");
       }
 
-      alert("Registration successful! Logging in...");
-      login(email, password); // Auto login after registration
-      navigate("/dashboard");
+      toast.success("Registration successful!", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+
+      navigate("/login");
     } catch (err) {
       setError(err.message);
     }

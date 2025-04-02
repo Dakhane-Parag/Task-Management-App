@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,6 +14,16 @@ const Login = () => {
     e.preventDefault();
     const success = await login(email, password);
     if (success) {
+      toast.success("Login successful!", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       navigate("/dashboard"); // Redirects user after successful login
     }
   };

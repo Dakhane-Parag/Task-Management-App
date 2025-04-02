@@ -6,6 +6,8 @@ import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./routes/PrivateRoute";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
           {/* Protected Route */}
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         </Routes>
+        <ToastContainer />
       </AuthProvider>
     </Router>
   );
