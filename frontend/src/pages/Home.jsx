@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Home() {
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center">
@@ -12,7 +15,14 @@ export default function Home() {
           Organize tasks, collaborate with teams, and meet deadlines effortlessly.
         </p>
         <div className="mt-6">
-          <button 
+          { user ? (
+          <h1 class="text-xl font-bold text-center text-white mt-2">
+          Streamline Your Tasks, Elevate Your Productivity!
+        </h1>
+        
+          ) : (
+            <>
+            <button 
             onClick={() => navigate("/register")}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-lg font-semibold mx-2 transition cursor-pointer"
           >
@@ -24,7 +34,8 @@ export default function Home() {
           >
             Login
           </button>
-        </div>
+          </>
+          )}</div>
       </header>
 
       {/* Features Section */}
