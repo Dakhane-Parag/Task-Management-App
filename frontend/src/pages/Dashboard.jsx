@@ -1,14 +1,17 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const Dashboard = () => {
-  const { user } = useContext(AuthContext);
+  const { user} = useContext(AuthContext);
+
+  
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
         <h1 className="text-2xl font-bold mb-6 text-center">Dashboard</h1>
-        <p className="text-center mb-4">Welcome, {user?.username}!</p>
+        <p className="text-center mb-4">Welcome, {user.username}!</p>
 
         {user?.role === "admin" ? (
           <>

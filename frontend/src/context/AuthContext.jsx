@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("AuthToken");
+  
     if (token) {
       axios.get("http://localhost:5000/me", {
         headers: { Authorization: `Bearer ${token}` },
@@ -22,6 +23,7 @@ export const AuthProvider = ({ children }) => {
         });
     }
   }, []);
+  
 
   const login = async (email, password) => {
     try {
@@ -29,7 +31,7 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-
+  
       if (res.status === 200) {
         localStorage.setItem("AuthToken", res.data.token);
         setUser(res.data.user);
@@ -43,6 +45,7 @@ export const AuthProvider = ({ children }) => {
       return false;
     }
   };
+  
 
   const logout = () => {
     localStorage.removeItem("AuthToken");
