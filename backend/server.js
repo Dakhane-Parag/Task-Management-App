@@ -2,11 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
-const userModel = require("./models/userSchema"); // Ensure this path is correct
+const userModel = require("./models/userSchema"); 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-
 const app = express();
+
+
+//Middlewares
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true, // Allow credentials (cookies) to be sent
@@ -14,10 +16,16 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+
+//Database Connection
 mongoose.connect("mongodb://localhost:27017/ZidioDatabase")
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
+
+
+//Routes
   app.post("/register", async (req, res) => {
     const { username, email, password, role } = req.body;
   
@@ -47,7 +55,6 @@ mongoose.connect("mongodb://localhost:27017/ZidioDatabase")
     }
   });
   
-
   app.post("/login", async (req, res) => {
     const { email, password } = req.body;
   
@@ -65,6 +72,7 @@ mongoose.connect("mongodb://localhost:27017/ZidioDatabase")
       if (!isPasswordValid) {
         return res.status(400).json({ message: "Invalid email or password" });
       }
+
   
       const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
   
@@ -85,4 +93,7 @@ mongoose.connect("mongodb://localhost:27017/ZidioDatabase")
   });
   
 
+
+  
+//Server running
 app.listen(5000, () => console.log("Server running on port 5000"));
