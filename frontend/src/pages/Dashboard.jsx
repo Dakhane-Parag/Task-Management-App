@@ -1,55 +1,29 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
-export default function Dashboard() {
-  const { user, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [tasks, setTasks] = useState([]);
-
-  useEffect(() => {
-   if(!user) {
-      navigate("/login"); // Redirect to login if user is not authenticated
-    }
-
-    // Dummy tasks (Replace with API call)
-    setTasks([
-      { id: 1, title: "Finish UI design", status: "In Progress" },
-      { id: 2, title: "Fix authentication bug", status: "Pending" },
-      { id: 3, title: "Write documentation", status: "Completed" },
-    ]);
-  }, [navigate]);
+const Dashboard = () => {
+  const { user } = useContext(AuthContext);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Welcome, {user?.username || "User"} 👋</h1>
-        {/* <button
-          onClick={() => {
-            logout();
-            navigate("/login");
-          }}
-          className="bg-red-600 px-4 py-2 rounded"
-        >
-          Logout
-        </button> */}
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
+        <h1 className="text-2xl font-bold mb-6 text-center">Dashboard</h1>
+        <p className="text-center mb-4">Welcome, {user?.username}!</p>
 
-      <h2 className="text-xl mt-4">Your Tasks</h2>
-      <div className="mt-4 space-y-3">
-        {tasks.length > 0 ? (
-          tasks.map((task) => (
-            <div key={task.id} className="p-4 bg-gray-800 rounded-lg">
-              <h3 className="text-lg font-semibold">{task.title}</h3>
-              <p className={`text-sm ${task.status === "Completed" ? "text-green-400" : "text-yellow-400"}`}>
-                {task.status}
-              </p>
-            </div>
-          ))
+        {user?.role === "admin" ? (
+          <>
+            <h2 className="text-lg font-semibold mb-2">Admin Panel</h2>
+            <p>Here, you can assign tasks to users.</p>
+          </>
         ) : (
-          <p>No tasks assigned yet.</p>
+          <>
+            <h2 className="text-lg font-semibold mb-2">User Panel</h2>
+            <p>View and manage your tasks here.</p>
+          </>
         )}
       </div>
     </div>
   );
-}
+};
+
+export default Dashboard;
