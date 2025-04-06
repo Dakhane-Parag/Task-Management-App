@@ -24,7 +24,7 @@ const Login = () => {
         progress: undefined,
         theme: "dark",
       });
-      navigate("/dashboard"); // Redirects user after successful login
+      navigate("/dashboard"); 
     }
   };
 

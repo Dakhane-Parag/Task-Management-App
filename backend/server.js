@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const userModel = require("./models/userSchema"); 
+const taskModel = require("./models/taskSchema");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const app = express();
@@ -91,6 +92,70 @@ mongoose.connect("mongodb://localhost:27017/ZidioDatabase")
       res.status(500).json({ message: "Server error" });
     }
   });
+
+  app.get("/me", async (req, res) => {
+    const authHeader = req.headers.authorization;
+  
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+  
+    const token = authHeader.split(" ")[1];
+  
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await userModel.findById(decoded.userId).select("-password"); // exclude password
+  
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      res.status(200).json({ user });
+    } catch (error) {
+      console.error("Auth verification failed", error);
+      res.status(401).json({ message: "Invalid or expired token" });
+    }
+  });
+  
+  app.post("/tasks", async (req,res) => {
+    const {task,description,assignedTo,createdBy} = req.body;
+    try{
+      const newTask = await taskModel.create({
+        task,
+      description,
+      status: "Pending",
+      createdBy,
+      assignedTo,
+      });
+    
+      res.status(201).json({message:"Task created successfully",task:newTask})
+
+    }catch(error){
+      console.error("Task creation error:",error);
+      res.status(500).json({message:"Server error"})
+    }
+  });
+
+  app.get("/users", async (req, res) => {
+    try {
+      const users = await userModel.find({}, "_id username email");
+      res.status(200).json(users);
+    } catch (err) {
+      res.status(500).json({ message: "Failed to fetch users" });
+    }
+  });
+
+  app.get("/tasks" , async(req,res) =>{
+    try{
+      const tasks = await taskModel.find({},"task status assignedTo").populate("assignedTo","username")
+        res.status(200).json(tasks)
+      
+    }catch(err){
+      console.log(err);
+      res.status(500).json({message:"failed to fetch tasks!"})
+    }
+  })
+  
   
 
 
